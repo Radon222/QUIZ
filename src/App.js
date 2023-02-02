@@ -58,6 +58,11 @@ const questions = [
   },
 ];
 
+const mixArrQuestions = questions
+  .map((i) => [Math.random(), i])
+  .sort()
+  .map((i) => i[1]);
+
 function Result({ correct }) {
   return (
     <div className="result">
@@ -77,7 +82,7 @@ function Result({ correct }) {
 
 function Game({ question, onClickVariant, step }) {
   const percentage = Math.round((step / questions.length) * 100);
-  const mixarr = question.variants
+  const mixArr = question.variants
     .map((i) => [Math.random(), i])
     .sort()
     .map((i) => i[1]);
@@ -91,7 +96,7 @@ function Game({ question, onClickVariant, step }) {
       </div>
       <h1>{question.title}</h1>
       <ul>
-        {mixarr.map((text, index) => (
+        {mixArr.map((text, index) => (
           <li key={index} onClick={() => onClickVariant(text)}>
             {text}
           </li>
@@ -105,21 +110,27 @@ function App() {
   const [step, setStep] = useState(0);
   const [correct, setCorrect] = useState(0);
   const onClickVariant = (text) => {
-    console.log(text);
+    // console.log(text);
     setStep(step + 1);
 
     // if (index === question.correct) {
     //   setCorrect(correct + 1);
     // }
 
-    if (questions[step].variants[questions[step].correct] === text) {
+    if (
+      mixArrQuestions[step].variants[mixArrQuestions[step].correct] === text
+    ) {
       setCorrect(correct + 1);
     }
   };
 
-  // console.log(questions[step].variants[questions[step].correct]);
+  // console.log(mixArrQuestions[step].variants[mixArrQuestions[step].correct]);
 
-  const question = questions[step];
+  // const question = questions[step];
+
+  // console.log(mixArrQuestions);
+
+  const question = mixArrQuestions[step];
   return (
     <div className="App">
       {step !== questions.length ? (
